@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/ryanmalonzo/eat-that-frog-cli/internal/db"
 	"github.com/spf13/cobra"
 )
@@ -15,8 +17,8 @@ var listCmd = &cobra.Command{
 			return err
 		}
 
-		for _, candidate := range candidates {
-			cmd.Println(candidate)
+		for i, candidate := range candidates {
+			cmd.Println(fmt.Sprintf("%v: %v", i+1, candidate))
 		}
 		return nil
 	},
