@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/ryanmalonzo/eat-that-frog-cli/internal/db"
 	"github.com/spf13/cobra"
 )
 
@@ -20,6 +21,12 @@ var rootCmd = &cobra.Command{
 }
 
 func Execute() {
+	// Initialize the database
+	if err := db.Init(); err != nil {
+		fmt.Fprintln(os.Stderr, "Error initializing database:", err)
+		os.Exit(1)
+	}
+
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
