@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/ryanmalonzo/eat-that-frog/internal/db"
+	"github.com/ryanmalonzo/eat-that-frog/internal/frog"
 	"github.com/spf13/cobra"
 )
 
@@ -12,17 +13,17 @@ var skipCmd = &cobra.Command{
 	Short: "Skip today's frog",
 	Long:  `Skip the task that has been picked as today's frog to eat.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		frog, err := GetTodayFrog()
+		frogTask, err := frog.GetTodayFrog()
 		if err != nil {
 			return err
 		}
 
-		err = db.SkipTodayFrog(frog)
+		err = db.SkipTodayFrog(frogTask)
 		if err != nil {
 			return err
 		}
 
-		cmd.Println(fmt.Sprintf("❌ %s", frog))
+		cmd.Println(fmt.Sprintf("❌ %s", frogTask))
 		return nil
 	},
 }

@@ -3,12 +3,12 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/ryanmalonzo/eat-that-frog/internal/db"
+	"github.com/ryanmalonzo/eat-that-frog/internal/frog"
 	"github.com/spf13/cobra"
 )
 
 func PrintAllCandidates(cmd *cobra.Command) error {
-	candidates, err := db.GetAllCandidates()
+	candidates, err := frog.GetAllCandidates()
 	if err != nil {
 		return err
 	}
