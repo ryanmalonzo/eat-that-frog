@@ -149,6 +149,18 @@ func MarkFrogAsDone(task string, timestamp time.Time) error {
 	return err
 }
 
+func SkipTodayFrog(task string) error {
+	db, err := GetDB()
+	if err != nil {
+		return err
+	}
+
+	defer db.Close()
+
+	_, err = db.Exec("UPDATE frogs SET status = 'skip', updated_at = ? WHERE date = CURRENT_DATE AND task = ?", time.Now(), task)
+	return err
+}
+
 func createTables(db *sql.DB) error {
 	schema := `
 	CREATE TABLE IF NOT EXISTS frogs (
