@@ -115,6 +115,27 @@ func PickCandidate(index int) error {
 	return err
 }
 
+func GetTodayFrog() (string, error) {
+	{
+		db, err := GetDB()
+		if err != nil {
+			return "", err
+		}
+
+		defer db.Close()
+
+		var task string
+		err = db.QueryRow("SELECT task FROM frogs WHERE date = CURRENT_DATE").Scan(&task)
+		if err == sql.ErrNoRows {
+			return "", nil
+		} else if err != nil {
+			return "", err
+		}
+
+		return task, nil
+	}
+}
+
 func createTables(db *sql.DB) error {
 	schema := `
 	CREATE TABLE IF NOT EXISTS frogs (
