@@ -44,7 +44,7 @@ func GetAllCandidates() ([]string, error) {
 
 	defer db.Close()
 
-	rows, err := db.Query("SELECT task FROM candidates")
+	rows, err := db.Query("SELECT task FROM candidates ORDER BY created_at")
 	if err != nil {
 		return nil, err
 	}
@@ -74,11 +74,52 @@ func DeleteAllCandidates() error {
 	return err
 }
 
+func CountCandidates() (int, error) {
+	db, err := GetDB()
+	if err != nil {
+		return 0, err
+	}
+	defer db.Close()
+
+	var count int
+	err = db.QueryRow("SELECT COUNT(*) FROM candidates").Scan(&count)
+	if err != nil {
+		return 0, err
+	}
+
+	return count, nil
+}
+
+func PickCandidate(index int) error {
+	db, err := GetDB()
+	if err != nil {
+		return err
+	}
+
+	defer db.Close()
+
+	var id int
+	var task string
+	err = db.QueryRow("SELECT id, task FROM candidates ORDER BY created_at LIMIT 1 OFFSET ?", index).Scan(&id, &task)
+	if err != nil {
+		return err
+	}
+
+	_, err = db.Exec("INSERT INTO frogs (date, task, status) VALUES (CURRENT_DATE, ?, 'pending')", task)
+
+	// Delete the candidate after picking
+	if err == nil {
+		_, err = db.Exec("DELETE FROM candidates WHERE id = ?", id)
+	}
+
+	return err
+}
+
 func createTables(db *sql.DB) error {
 	schema := `
 	CREATE TABLE IF NOT EXISTS frogs (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		date TEXT NOT NULL UNIQUE,
+		date TIMESTAMP NOT NULL UNIQUE,
 		task TEXT NOT NULL,
 		status TEXT NOT NULL CHECK(status IN ('pending', 'done', 'skip')),
 		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
