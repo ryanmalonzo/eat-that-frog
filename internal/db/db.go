@@ -62,6 +62,18 @@ func GetAllCandidates() ([]string, error) {
 	return candidates, nil
 }
 
+func DeleteAllCandidates() error {
+	db, err := GetDB()
+	if err != nil {
+		return err
+	}
+
+	defer db.Close()
+
+	_, err = db.Exec("DELETE FROM candidates")
+	return err
+}
+
 func createTables(db *sql.DB) error {
 	schema := `
 	CREATE TABLE IF NOT EXISTS frogs (
