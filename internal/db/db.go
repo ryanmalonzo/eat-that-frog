@@ -36,6 +36,32 @@ func AddCandidate(task string) error {
 	return err
 }
 
+func GetAllCandidates() ([]string, error) {
+	db, err := GetDB()
+	if err != nil {
+		return nil, err
+	}
+
+	defer db.Close()
+
+	rows, err := db.Query("SELECT task FROM candidates")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var candidates []string
+	for rows.Next() {
+		var task string
+		if err := rows.Scan(&task); err != nil {
+			return nil, err
+		}
+		candidates = append(candidates, task)
+	}
+
+	return candidates, nil
+}
+
 func createTables(db *sql.DB) error {
 	schema := `
 	CREATE TABLE IF NOT EXISTS frogs (
