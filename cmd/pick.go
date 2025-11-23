@@ -19,6 +19,15 @@ var pickCmd = &cobra.Command{
 			index = args[0]
 		}
 
+		count, err := db.CountCandidates()
+		if err != nil {
+			return err
+		}
+
+		if count == 0 {
+			return fmt.Errorf("no candidate frogs available to pick")
+		}
+
 		if index == "" {
 			cmd.Println("Please choose from the following candidate frogs:")
 			PrintAllCandidates(cmd)
@@ -29,7 +38,6 @@ var pickCmd = &cobra.Command{
 				return err
 			}
 
-			count, err := db.CountCandidates()
 			if err != nil {
 				return err
 			}
