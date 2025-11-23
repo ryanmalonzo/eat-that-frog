@@ -1,6 +1,6 @@
 package main
 
-import "github.com/ryanmalonzo/eat-that-frog-cli/cmd"
+import "github.com/ryanmalonzo/eat-that-frog/cmd"
 
 func main() {
 	cmd.Execute()

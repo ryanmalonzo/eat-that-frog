@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/ryanmalonzo/eat-that-frog-cli/internal/db"
+	"github.com/ryanmalonzo/eat-that-frog/internal/db"
 	"github.com/spf13/cobra"
 )
 

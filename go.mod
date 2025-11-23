@@ -1,4 +1,4 @@
-module github.com/ryanmalonzo/eat-that-frog-cli
+module github.com/ryanmalonzo/eat-that-frog
 
 go 1.24.6
 
