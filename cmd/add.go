@@ -12,7 +12,7 @@ var addCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		task := args[0]
-		return db.AddTask(task)
+		return db.AddCandidate(task)
 	},
 }
 

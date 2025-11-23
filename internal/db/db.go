@@ -24,7 +24,7 @@ func GetDB() (*sql.DB, error) {
 	return sql.Open("sqlite", DBFileName)
 }
 
-func AddTask(task string) error {
+func AddCandidate(task string) error {
 	db, err := GetDB()
 	if err != nil {
 		return err
