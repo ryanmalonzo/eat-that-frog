@@ -13,7 +13,7 @@ var doneCmd = &cobra.Command{
 	Short: "Mark today's frog as done",
 	Long:  `Mark the task that has been picked as today's frog to eat as done.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		frogTask, err := frog.GetTodayFrog()
+		frogTask, frogStatus, err := frog.GetTodayFrog()
 		if err != nil {
 			return err
 		}
@@ -23,7 +23,7 @@ var doneCmd = &cobra.Command{
 			return err
 		}
 
-		cmd.Println(fmt.Sprintf("✅ %s", frogTask))
+		cmd.Println(fmt.Sprintf("%s %s", frog.GetStatusEmoji(frogStatus), frogTask))
 		return nil
 	},
 }

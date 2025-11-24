@@ -86,16 +86,18 @@ func PickCandidate(index int) error {
 	return tx.Commit()
 }
 
-func GetTodayFrog() (string, error) {
+func GetTodayFrog() (string, string, error) {
 	var task string
-	err := dbPool.QueryRow("SELECT task FROM frogs WHERE date = CURRENT_DATE").Scan(&task)
+	var status string
+
+	err := dbPool.QueryRow("SELECT task, status FROM frogs WHERE date = CURRENT_DATE").Scan(&task, &status)
 	if err == sql.ErrNoRows {
-		return "", nil
+		return "", "", nil
 	} else if err != nil {
-		return "", err
+		return "", "", err
 	}
 
-	return task, nil
+	return task, status, nil
 }
 
 func updateFrogStatus(task string, status string, timestamp time.Time) error {

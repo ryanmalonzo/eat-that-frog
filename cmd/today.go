@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/ryanmalonzo/eat-that-frog/internal/frog"
 	"github.com/spf13/cobra"
 )
@@ -10,12 +12,12 @@ var todayCmd = &cobra.Command{
 	Short: "Show today's frog",
 	Long:  `Show the task that has been picked as today's frog to eat.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		frog, err := frog.GetTodayFrog()
+		frogTask, frogStatus, err := frog.GetTodayFrog()
 		if err != nil {
 			return err
 		}
 
-		cmd.Println(frog)
+		cmd.Println(fmt.Sprintf("%s %s", frog.GetStatusEmoji(frogStatus), frogTask))
 		return nil
 	},
 }

@@ -10,17 +10,17 @@ import (
 
 // GetTodayFrog returns today's picked frog with validation.
 // Returns an error if no frog has been picked for today.
-func GetTodayFrog() (string, error) {
-	frog, err := db.GetTodayFrog()
+func GetTodayFrog() (string, string, error) {
+	frogTask, frogStatus, err := db.GetTodayFrog()
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 
-	if frog == "" {
-		return "", errors.New("no frog has been picked for today")
+	if frogTask == "" {
+		return "", "", errors.New("no frog has been picked for today")
 	}
 
-	return frog, nil
+	return frogTask, frogStatus, nil
 }
 
 // GetAllCandidates returns all candidate frogs.
@@ -63,3 +63,15 @@ func PickCandidate(index int) error {
 	return db.PickCandidate(index)
 }
 
+func GetStatusEmoji(status string) string {
+	switch status {
+	case "pending":
+		return "🐸"
+	case "done":
+		return "✅"
+	case "skip":
+		return "⏭️"
+	default:
+		return ""
+	}
+}
