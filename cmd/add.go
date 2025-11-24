@@ -12,6 +12,13 @@ var addCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		task := args[0]
-		return db.AddCandidate(task)
+		err := db.AddCandidate(task)
+		if err != nil {
+			return err
+		}
+
+		PrintAllCandidates(cmd)
+
+		return nil
 	},
 }
