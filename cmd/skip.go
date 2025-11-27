@@ -13,7 +13,7 @@ var skipCmd = &cobra.Command{
 	Short: "Skip today's frog",
 	Long:  `Skip the task that has been picked as today's frog to eat.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		frogTask, frogStatus, err := frog.GetTodayFrog()
+		frogTask, _, err := frog.GetTodayFrog()
 		if err != nil {
 			return err
 		}
@@ -23,7 +23,7 @@ var skipCmd = &cobra.Command{
 			return err
 		}
 
-		cmd.Println(fmt.Sprintf("%s %s", frog.GetStatusEmoji(frogStatus), frogTask))
+		cmd.Println(fmt.Sprintf("%s %s", frog.GetStatusEmoji("skip"), frogTask))
 		return nil
 	},
 }
